@@ -43,14 +43,16 @@ jobs:
         uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
-      # - name: fix PKGBUILD
-      #   shell: bash
-      #   run: |
-      #     gitfolder=$(find -type f -name PKGBUILD | sed 's/PKGBUILD//')
-      #     cd $gitfolder
-      #     sed -i "/\bdepends=/s/(/\('xpto\' 'xpto3\' 'xpto2\' /" PKGBUILD
-      #     sed -i "/makedepends=/s/(/\('xpto\' 'xpto2\' 'xpto3\' /" PKGBUILD
-      #     sed -i '/\bdepends=/!b; :a; n; a\    '\'xpto\' PKGBUILD
+      - name: fix PKGBUILD
+        shell: bash
+        run: |
+          gitfolder=$(find -type f -name PKGBUILD | sed 's/PKGBUILD//')
+          cd $gitfolder
+          # sed -i "/\bdepends=/s/(/\('xpto\' 'xpto3\' 'xpto2\' /" PKGBUILD
+          # sed -i "/makedepends=/s/(/\('xpto\' 'xpto2\' 'xpto3\' /" PKGBUILD
+          # sed -i '/\bdepends=/!b; :a; n; a\    '\'xpto\' PKGBUILD
+          sed -i 's/FFMPEG_OBS_FULL=.*/FFMPEG_OBS_FULL=ON/g' PKGBUILD
+          sed -i 's/FFMPEG_OBS_DECKLINK=.*/FFMPEG_OBS_DECKLINK=OFF/g' PKGBUILD
 
       - name: Update github
         shell: bash
